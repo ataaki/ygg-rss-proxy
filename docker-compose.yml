@@ -38,7 +38,7 @@ services:
          - flaresolverr
 
    flaresolverr:
-      image: ghcr.io/flaresolverr/flaresolverr:latest
+      image: ghcr.io/svaningelgem/flaresolverr:latest
       container_name: flaresolverr
       environment:
          TZ: Europe/Paris
