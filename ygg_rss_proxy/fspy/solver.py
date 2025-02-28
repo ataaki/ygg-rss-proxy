@@ -1,5 +1,6 @@
 from typing import Union, Literal, Optional, List, Tuple
 from urllib.parse import urlencode
+from ygg_rss_proxy.logging_config import logger
 
 import orjson
 import requests
@@ -33,6 +34,7 @@ class FlareSolverr:
         http_schema: Literal["http", "https"] = "http",
         additional_headers: dict = None,
         v: str = "v1",
+        byparr: bool = False
     ) -> None:
         """
         :param host: Host address for FlareSolverr. Default: localhost.
@@ -57,7 +59,7 @@ class FlareSolverr:
         self.flare_solverr_url = (
             f"{http_schema}://{host}{':' + self.port if port is not None else ''}"
         )
-        self.version, self.user_agent = self._check_flare_solver()
+        self.version, self.user_agent = self._check_byparr_solver() if byparr else self._check_flare_solver()
         self.flare_solverr_url = (
             f"{http_schema}://{host}{':' + self.port if port is not None else ''}/{v}"
         )
@@ -66,6 +68,11 @@ class FlareSolverr:
         response = self.req_session.get(self.flare_solverr_url)
         resp_dict = orjson.loads(response.content)
         return resp_dict["version"], resp_dict["userAgent"]
+
+    def _check_byparr_solver(self) -> Tuple[str, str]:
+        response = self.req_session.get(f"{self.flare_solverr_url}/health")
+        resp_dict = orjson.loads(response.content)
+        return resp_dict["status"], resp_dict["status"]
 
     @property
     def sessions(self) -> List[str]:
@@ -154,11 +161,16 @@ class FlareSolverr:
             _check_proxy_url(proxy_url)
             payload["proxy"] = {"url": proxy_url}
 
+        logger.info(f"Sending request: {self.flare_solverr_url} {payload}")
         response = self.req_session.post(self.flare_solverr_url, json=payload)
+        logger.info(response)
         response_dict = orjson.loads(response.content)
+        logger.info(response_dict)
 
         if response_dict["status"] != "ok":
+            logger.debug("HEEEEEERE WHY ????")
             raise FlareSolverError.from_dict(response_dict)
+        logger.debug("OKKKKK ???")
         return GetPostRequestResponse.from_dict(response_dict)
 
     def request_get(
@@ -189,12 +201,14 @@ class FlareSolverr:
         :rtype: GetPostRequestResponse
         :return: A class containing website data and other related request data.
         """
+        logger.info("Preparing request")
         payload = {
             "cmd": "request.get",
             "url": url,
-            "maxTimeout": max_timeout,
-            "returnOnlyCookies": return_only_cookies,
+            "max_timeout": max_timeout / 100,
+            # "returnOnlyCookies": return_only_cookies,
         }
+        logger.info(f"Request payload: {payload}")
         return self._do_the_work_for_get_post(
             payload, session, session_ttl_minutes, cookies, proxy_url
         )

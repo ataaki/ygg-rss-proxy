@@ -2,48 +2,29 @@ version: "3.8"
 
 services:
 
-   qbittorrent:
-      image: lscr.io/linuxserver/qbittorrent:latest
-      container_name: qbittorrent
-      environment:
-         PUID: 1000
-         PGID: 1000
-         TZ: Europe/Paris
-         WEBUI_PORT: 8080
-      volumes:
-         - ./config:/config
-         - ./downloads:/downloads
-      ports:
-         - 6881:6881
-         - 6881:6881/udp
-         - 8080:8080
-      restart: unless-stopped
-
    ygg-rss-proxy:
-      image: ghcr.io/limedrive/ygg-rss-proxy:latest
       build: .
       container_name: ygg-rss-proxy
-      expose:
-         - 8080
+      ports:
+         - 8080:8080
       environment:
          TZ: Europe/Paris
-         YGG_USER: 'StOpCouDflaE'
-         YGG_PASS: 'BaDaSS'
-         FLARESOLVERR_HOST: flaresolverr
-         LOG_LEVEL: INFO
+         FLARESOLVERR_HOST: byparr
+         LOG_LEVEL: DEBUG
       volumes:
          - ./config:/app/config
+      env_file:
+         - ygg_credentials.env
       restart: unless-stopped
       depends_on:
-         - flaresolverr
+         - byparr
 
-   flaresolverr:
-      image: ghcr.io/svaningelgem/flaresolverr:latest
-      container_name: flaresolverr
+   byparr:
+      image: ghcr.io/thephaseless/byparr:main
+      container_name: byparr
       environment:
          TZ: Europe/Paris
-         LOG_LEVEL: info
-         CAPTCHA_SOLVER: none
-      expose:
-         - 8191
+         LOG_LEVEL: DEBUG
+      ports:
+         - 8191:8191
       restart: unless-stopped

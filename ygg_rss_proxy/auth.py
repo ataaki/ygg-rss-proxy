@@ -29,7 +29,9 @@ def ygg_basic_login(
     Raises:
     Exception: If the login is unsuccessful.
     """
+    logger.debug(f"YGG Payload: {ygg_playload}")
     response = session.post(URL_AUTH, data=ygg_playload, allow_redirects=True)
+    logger.debug(f"HELLOOOOOO {response.content}")
     if response.status_code == 200 and "auth/login" not in response.url:
         logger.info("Successfully authenticated to YGG")
         return session
@@ -67,12 +69,14 @@ def ygg_cloudflare_login(
         http_schema=settings.flaresolverr_shema,
         additional_headers=None,
         v="v1",
+        byparr=True
     )
 
     if fs_solver.version is None:
         logger.error("Failed to connect to FlareSolverr, please check our instance")
         raise Exception("Failed to connect to FlareSolverr")
 
+    logger.info(f"Starting request")
     response = fs_solver.request_get(url="https://www.ygg.re")
     logger.debug(f"FlareSolverr message: {response.message}")
     logger.debug(f"FlareSolverr status: {response.solution.status}")
@@ -85,7 +89,7 @@ def ygg_cloudflare_login(
         )
         raise Exception("Failed to get cookies from flaresolverr")
 
-    if response.message == "Challenge solved!":
+    if response.message == "Success":
         cookie_jar = cookielib.CookieJar()
         cookies = response.solution.cookies
 
@@ -105,7 +109,7 @@ def ygg_cloudflare_login(
                         path=cookie["path"],
                         path_specified=True,
                         secure=cookie["secure"],
-                        expires=cookie["expires"],
+                        expires=cookie["expiry"],
                         discard=False,
                         comment=None,
                         comment_url=None,
@@ -134,13 +138,13 @@ def ygg_cloudflare_login(
         raise Exception("Failed to authenticate to YGG using flaresolverr")
 
 
-@retry(
-    stop=stop_after_attempt(2),
-    wait=wait_fixed(0.3),
-    retry_error_callback=lambda retry_state: Exception(
-        "Failed to connect to YGG after retries"
-    ),
-)
+# @retry(
+#     stop=stop_after_attempt(2),
+#     wait=wait_fixed(0.3),
+#     retry_error_callback=lambda retry_state: Exception(
+#         "Failed to connect to YGG after retries"
+#     ),
+# )
 @timeout_decorator.timeout(60, exception_message=f"Timeout after 60 seconds")
 def ygg_login(
     session=requests.Session(), ygg_playload: dict = ygg_playload

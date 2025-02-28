@@ -10,13 +10,13 @@ from ygg_rss_proxy.logging_config import logger
 
 
 @timeout_decorator.timeout(3, exception_message=f"Timeout after 3 seconds")
-@retry(
-    stop=stop_after_attempt(3),
-    wait=wait_fixed(0.3),
-    retry_error_callback=lambda retry_state: Exception(
-        "Failed to connect to the database after retries"
-    ),
-)
+# @retry(
+#     stop=stop_after_attempt(3),
+#     wait=wait_fixed(0.3),
+#     retry_error_callback=lambda retry_state: Exception(
+#         "Failed to connect to the database after retries"
+#     ),
+# )
 def check_database_connection():
     from ygg_rss_proxy.app import db
 
@@ -28,13 +28,13 @@ def check_database_connection():
         raise Exception("Failed to connect to the database")
 
 
-@retry(
-    stop=stop_after_attempt(3),
-    wait=wait_fixed(0.3),
-    retry_error_callback=lambda retry_state: Exception(
-        "Failed to connect to the database after retries"
-    ),
-)
+# @retry(
+#     stop=stop_after_attempt(3),
+#     wait=wait_fixed(0.3),
+#     retry_error_callback=lambda retry_state: Exception(
+#         "Failed to connect to the database after retries"
+#     ),
+# )
 @timeout_decorator.timeout(90, exception_message=f"Timeout after 90 seconds")
 def new_session() -> requests.Session:
     """
@@ -52,13 +52,13 @@ def new_session() -> requests.Session:
     return ygg_session
 
 
-@retry(
-    stop=stop_after_attempt(3),
-    wait=wait_fixed(0.3),
-    retry_error_callback=lambda retry_state: Exception(
-        "Failed to connect to the database after retries"
-    ),
-)
+# @retry(
+#     stop=stop_after_attempt(3),
+#     wait=wait_fixed(0.3),
+#     retry_error_callback=lambda retry_state: Exception(
+#         "Failed to connect to the database after retries"
+#     ),
+# )
 def init_session() -> None:
     """
     This function initializes a session by checking if session data exists.
@@ -72,13 +72,13 @@ def init_session() -> None:
         new_session()
 
 
-@retry(
-    stop=stop_after_attempt(3),
-    wait=wait_fixed(0.3),
-    retry_error_callback=lambda retry_state: Exception(
-        "Failed to connect to the database after retries"
-    ),
-)
+# @retry(
+#     stop=stop_after_attempt(3),
+#     wait=wait_fixed(0.3),
+#     retry_error_callback=lambda retry_state: Exception(
+#         "Failed to connect to the database after retries"
+#     ),
+# )
 def get_session() -> requests.Session:
     """
     This function retrieves a session by checking if session data exists.
@@ -103,13 +103,13 @@ def get_session() -> requests.Session:
     return new_session()
 
 
-@retry(
-    stop=stop_after_attempt(3),
-    wait=wait_fixed(0.3),
-    retry_error_callback=lambda retry_state: Exception(
-        "Failed to connect to the database after retries"
-    ),
-)
+# @retry(
+#     stop=stop_after_attempt(3),
+#     wait=wait_fixed(0.3),
+#     retry_error_callback=lambda retry_state: Exception(
+#         "Failed to connect to the database after retries"
+#     ),
+# )
 def save_session(requests_session: requests.Session) -> None:
     """
     This function saves the session data of a requests.Session object into the Flask session.
