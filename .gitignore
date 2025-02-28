@@ -172,4 +172,4 @@ Thumbs.db
 .old/
 config/
 dev-compose.yml
-ygg_crendentials
+ygg_credentials.txt
