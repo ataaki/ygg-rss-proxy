@@ -1,3 +1,9 @@
+Fork du projet ygg-rss-proxy.
+
+La branch main contient actuellement des modifications qui permettent d'utiliser la version [flaresolverr](https://github.com/21hsmw/FlareSolverr) de [@21hsmw](https://github.com/21hsmw). (Version qui n'est plus fonctionnelle).
+
+Une version fonctionnelle est disponible sur la branche `byparr`. Le code n'est pas propre mais il est fonctionnel. Il utilise [byparr](https://github.com/ThePhaseless/Byparr) plutot que flaresolverr, qui resoud les capatchas cloudflare a l'heure ou j'ecris ces lignes.
+
 # ygg-rss-proxy
 
 # 🚨 Important Notice 🚨
