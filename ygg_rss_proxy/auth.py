@@ -29,9 +29,7 @@ def ygg_basic_login(
     Raises:
     Exception: If the login is unsuccessful.
     """
-    logger.debug(f"YGG Payload: {ygg_playload}")
     response = session.post(URL_AUTH, data=ygg_playload, allow_redirects=True)
-    logger.debug(f"HELLOOOOOO {response.content}")
     if response.status_code == 200 and "auth/login" not in response.url:
         logger.info("Successfully authenticated to YGG")
         return session
@@ -76,7 +74,6 @@ def ygg_cloudflare_login(
         logger.error("Failed to connect to FlareSolverr, please check our instance")
         raise Exception("Failed to connect to FlareSolverr")
 
-    logger.info(f"Starting request")
     response = fs_solver.request_get(url="https://www.ygg.re")
     logger.debug(f"FlareSolverr message: {response.message}")
     logger.debug(f"FlareSolverr status: {response.solution.status}")

@@ -1,6 +1,5 @@
 from typing import Union, Literal, Optional, List, Tuple
 from urllib.parse import urlencode
-from ygg_rss_proxy.logging_config import logger
 
 import orjson
 import requests
@@ -161,16 +160,11 @@ class FlareSolverr:
             _check_proxy_url(proxy_url)
             payload["proxy"] = {"url": proxy_url}
 
-        logger.info(f"Sending request: {self.flare_solverr_url} {payload}")
         response = self.req_session.post(self.flare_solverr_url, json=payload)
-        logger.info(response)
         response_dict = orjson.loads(response.content)
-        logger.info(response_dict)
 
         if response_dict["status"] != "ok":
-            logger.debug("HEEEEEERE WHY ????")
             raise FlareSolverError.from_dict(response_dict)
-        logger.debug("OKKKKK ???")
         return GetPostRequestResponse.from_dict(response_dict)
 
     def request_get(
@@ -201,14 +195,12 @@ class FlareSolverr:
         :rtype: GetPostRequestResponse
         :return: A class containing website data and other related request data.
         """
-        logger.info("Preparing request")
         payload = {
             "cmd": "request.get",
             "url": url,
             "max_timeout": max_timeout / 100,
             # "returnOnlyCookies": return_only_cookies,
         }
-        logger.info(f"Request payload: {payload}")
         return self._do_the_work_for_get_post(
             payload, session, session_ttl_minutes, cookies, proxy_url
         )
