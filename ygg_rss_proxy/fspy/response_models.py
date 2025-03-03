@@ -86,8 +86,8 @@ class Solution:
 
 @dataclass
 class GetPostRequestResponse:
-    start_timestamp: int
-    end_timestamp: int
+    startTimestamp: int
+    endTimestamp: int
     version: str
     status: str
     message: str
@@ -96,8 +96,8 @@ class GetPostRequestResponse:
     @classmethod
     def from_dict(cls, dct: dict):
         return cls(
-            dct["start_timestamp"],
-            dct["end_timestamp"],
+            dct["startTimestamp"],
+            dct["endTimestamp"],
             dct["version"],
             dct["status"],
             dct["message"],
