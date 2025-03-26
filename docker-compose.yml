@@ -39,7 +39,7 @@ services:
          - flaresolverr
 
    flaresolverr:
-      image: ghcr.io/svaningelgem/flaresolverr:latest
+      image: 21hsmw/flaresolverr:nodriver
       container_name: flaresolverr
       environment:
          TZ: Europe/Paris
