@@ -29,6 +29,7 @@ services:
          TZ: Europe/Paris
          YGG_USER: 'StOpCouDflaE'
          YGG_PASS: 'BaDaSS'
+         YGG_URL: "https://www.yggtorrent.top"
          FLARESOLVERR_HOST: flaresolverr
          LOG_LEVEL: INFO
       volumes:
