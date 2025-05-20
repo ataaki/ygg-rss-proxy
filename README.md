@@ -1,3 +1,5 @@
+# OBSOLETE
+
 Fork du projet ygg-rss-proxy.
 
 La branch main contient actuellement des modifications qui permettent d'utiliser la version [flaresolverr](https://github.com/21hsmw/FlareSolverr) de [@21hsmw](https://github.com/21hsmw). (Version qui n'est plus fonctionnelle).
