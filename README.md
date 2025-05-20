@@ -77,32 +77,12 @@ C'est pour illustré l'utilisation de l'application avec d'autres services.
 1. **Créer un fichier `docker-compose.yml`**
 
    ```yaml
-   version: "3.8"
-
    services:
-
-      qbittorrent:
-         image: lscr.io/linuxserver/qbittorrent:latest
-         container_name: qbittorrent
-         environment:
-            PUID: 1000
-            PGID: 1000
-            TZ: Europe/Paris
-            WEBUI_PORT: 8080
-         volumes:
-            - ./config:/config
-            - ./downloads:/downloads
-         ports:
-            - 6881:6881
-            - 6881:6881/udp
-            - 8080:8080
-         restart: unless-stopped
-
       ygg-rss-proxy:
          image: ghcr.io/limedrive/ygg-rss-proxy:latest
          container_name: ygg-rss-proxy
-         expose:
-            - 8080
+         ports:
+            - 8080:8080
          environment:
             TZ: Europe/Paris
             YGG_USER: 'User'
