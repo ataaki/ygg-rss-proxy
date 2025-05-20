@@ -79,7 +79,6 @@ C'est pour illustré l'utilisation de l'application avec d'autres services.
    ```yaml
    services:
       ygg-rss-proxy:
-         image: ghcr.io/limedrive/ygg-rss-proxy:latest
          container_name: ygg-rss-proxy
          ports:
             - 8080:8080
@@ -112,7 +111,7 @@ C'est pour illustré l'utilisation de l'application avec d'autres services.
 2. **Exécuter Docker Compose**
 
    ```bash
-   docker-compose up -d
+   docker-compose up -d --build
    ```
 
 ## Comment Utiliser le Proxy
